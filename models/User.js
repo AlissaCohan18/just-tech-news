@@ -1,14 +1,23 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt");
+const sequelize = require("../config/connection");
 
 // create our User model
-class User extends Model {}
+class User extends Model {
+  // set up method to run on instance data (per user) to check password
+    // Note: per documentation: use sync for simple script (like this dev). If
+    // using bcrypt on a server, use async (for better user exp on a live app)
+  checkPassword(loginPw) {
+    return bcrypt.compareSync(loginPw, this.password);
+  }
+}
+
 
 // define table columns and configuration
 // use .init() method to initialize the model's data and configuration
 User.init(
-   //passing 2 objects as arguments. 1st: define columns & data types for columns, 2nd: configures certain options for the table
-   {
+  //passing 2 objects as arguments. 1st: define columns & data types for columns, 2nd: configures certain options for the table
+  {
     // define an id column
     id: {
       // use the special Sequelize DataTypes object provide what type of data it is
@@ -18,12 +27,12 @@ User.init(
       // instruct that this is the Primary Key
       primaryKey: true,
       // turn on auto increment
-      autoIncrement: true
+      autoIncrement: true,
     },
     // define a username column
     username: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     // define an email column
     email: {
@@ -33,8 +42,8 @@ User.init(
       unique: true,
       // if allowNull is set to false, we can run our data through validators before creating the table data
       validate: {
-        isEmail: true
-      }
+        isEmail: true,
+      },
     },
     // define a password column
     password: {
@@ -42,11 +51,26 @@ User.init(
       allowNull: false,
       validate: {
         // this means the password must be at least four characters long
-        len: [4]
-      }
-    }
+        len: [4],
+      },
+    },
   },
   {
+    hooks: {
+      // set up beforeCreate lifecycle "hook" functionality
+      async beforeCreate(newUserData) {
+        newUserData.password = await bcrypt.hash(newUserData.password, 10);
+        return newUserData;
+      },
+      // set up beforeUpdate lifecycle "hook" functionality
+      async beforeUpdate(updatedUserData) {
+        updatedUserData.password = await bcrypt.hash(
+          updatedUserData.password,
+          10
+        );
+        return updatedUserData;
+      },
+    },
     // TABLE CONFIGURATION OPTIONS GO HERE (https://sequelize.org/v5/manual/models-definition.html#configuration))
 
     // pass in our imported sequelize connection (the direct connection to our database)
@@ -58,7 +82,7 @@ User.init(
     // use underscores instead of camel-casing (i.e. `comment_text` and not `commentText`)
     underscored: true,
     // make it so our model name stays lowercase in the database
-    modelName: 'user'
+    modelName: "user",
   }
 );
 
