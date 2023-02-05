@@ -1,7 +1,15 @@
-// All this file is responsible for right now is importing the User model
-    //and exporting an object with it as a property. 
+// Import the User & Post model
+const User = require("./User");
+const Post = require("./Post");
 
+// create associations
+User.hasMany(Post, {
+  foreignKey: "user_id",
+});
 
-const User = require('./User');
+Post.belongsTo(User, {
+  foreignKey: "user_id",
+});
 
-module.exports = { User };
+// Export an object with them as the properties
+module.exports = { User, Post };
