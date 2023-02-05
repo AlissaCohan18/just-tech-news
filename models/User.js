@@ -5,18 +5,18 @@ const sequelize = require("../config/connection");
 // create our User model
 class User extends Model {
   // set up method to run on instance data (per user) to check password
-    // Note: per documentation: use sync for simple script (like this dev). If
-    // using bcrypt on a server, use async (for better user exp on a live app)
+  // Note: per documentation: use sync for simple script (like this dev). If
+  // using bcrypt on a server, use async (for better user exp on a live app)
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
   }
 }
 
-
 // define table columns and configuration
 // use .init() method to initialize the model's data and configuration
 User.init(
-  //passing 2 objects as arguments. 1st: define columns & data types for columns, 2nd: configures certain options for the table
+  //passing 2 objects as arguments
+//1st object defines columns & data types for columns 
   {
     // define an id column
     id: {
@@ -55,6 +55,7 @@ User.init(
       },
     },
   },
+//2nd object configures certain options for the table
   {
     hooks: {
       // set up beforeCreate lifecycle "hook" functionality
