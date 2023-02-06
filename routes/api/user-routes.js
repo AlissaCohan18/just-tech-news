@@ -1,10 +1,9 @@
 const router = require("express").Router();
-const { User } = require("../../models");
+const { User, Post, Vote } = require("../../models");
 
 // GET /api/users
 router.get("/", (req, res) => {
-  // Access our User model and run .findAll() method)
-  // .findAll() method: query all of the users from the user table in the db
+  // Access our User model & .findAll() to query all users from user table in db
   User.findAll({
     attributes: { exclude: ["password"] },
   })
@@ -22,6 +21,18 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
+    include: [
+      {
+        model: Post,
+        attributes: ['id', 'title', 'post_url', 'created_at']
+      },
+      {
+        model: Post,
+        attributes: ['title'],
+        through: Vote,
+        as: 'voted_posts'
+      }
+    ]
   })
     .then((dbUserData) => {
       if (!dbUserData) {
@@ -79,7 +90,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-// PUT /api/users/1
+// PUT /api/users/#
 router.put("/:id", (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
