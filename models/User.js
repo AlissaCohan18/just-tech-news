@@ -15,18 +15,13 @@ class User extends Model {
 // define table columns and configuration
 // use .init() method to initialize the model's data and configuration
 User.init(
-  //passing 2 objects as arguments
-//1st object defines columns & data types for columns 
+  //passing 2 objects as arguments; 1st obj defines columns & data types for columns
   {
     // define an id column
     id: {
-      // use the special Sequelize DataTypes object provide what type of data it is
       type: DataTypes.INTEGER,
-      // this is the equivalent of SQL's `NOT NULL` option
       allowNull: false,
-      // instruct that this is the Primary Key
       primaryKey: true,
-      // turn on auto increment
       autoIncrement: true,
     },
     // define a username column
@@ -55,7 +50,7 @@ User.init(
       },
     },
   },
-//2nd object configures certain options for the table
+  //2nd obj configures certain options for the table
   {
     hooks: {
       // set up beforeCreate lifecycle "hook" functionality
@@ -73,7 +68,6 @@ User.init(
       },
     },
     // TABLE CONFIGURATION OPTIONS GO HERE (https://sequelize.org/v5/manual/models-definition.html#configuration))
-
     // pass in our imported sequelize connection (the direct connection to our database)
     sequelize,
     // don't automatically create createdAt/updatedAt timestamp fields
