@@ -2,16 +2,22 @@
 
 
 ## Description:
-This application leverages Sequalize and provides an experience to do the following:
-Allow users to create, read, update, and delete a profile in the database. The login includes security and authentication to protect your password and validate the user information. This allows you to create and manipulate posts, retrieve all of your posts, retrieve a post by id, update the title of a post, and delete posts.
-The application also allows users to vote on posts and see who voted on a post. Additionally, you may leave a comment on someone else's post, see comments on your posts, as well as delete comments on a post.
+This full stack, front and back end, application which provides a friendly user experience to create, read, update, and delete profiles, posts, and comments. The login includes security and authentication to protect your password and validate user information. Additionally, the application allows users to vote on posts as well as see who has voted on posts. 
 
 
 ## Built With
+* Handlebars
 * Node.express
-* SQL
+* MySQL
 * Sequelize
 * Javascript
+* jest
+* HTML
+* CSS
+
+## Screenshot
+![](assets/snip.png)
+
 
 ## Contributing
 UCF Boot Camp Spot
